@@ -1,0 +1,23 @@
+<?php $loginUrl = $this->protocol . '://' .$this->websiteUrl.'go'; ?>
+<header class="grid_12">
+	<img class="logo" src="//www.seotoaster.com/downloads/" width="215" height="275" alt="Seotoaster install">
+	<h1 class="grid_7 bravo green" style="margin-top: 48px"><?php echo $this->translate('Seotoaster installed');?></h1>
+</header>
+
+<div id="finish-content" class="grid_10 prefix_1 mt30px mb20px">
+	<h3 class="title-step"><?php echo $this->translate('Get ready to toast:');?></h3>
+	<ol>
+		<li><?php echo $this->translate('You must remove the <b>&#147;install&#148;</b> folder in order to access your software.');?></li>
+		<li><?php echo $this->translate('Log into your toaster here');?>: <a href="<?php echo $loginUrl; ?>"><?php echo $loginUrl; ?></a></li>
+		<li><?php echo $this->translate('Fill in your business information, or website ID Card as we like to call it, in order to facilitate your website indexation with search engines.'); ?></li>
+		<?php if(!$this->serverConfigGenerated): ?>
+            <?php if (isset($_SERVER['SERVER_SOFTWARE'])): ?>
+                <?php if (strpos(strtolower($_SERVER['SERVER_SOFTWARE']), 'apache') !== false):?>
+                    <li>
+                        <?php echo $this->partial('_server.phtml'); ?>
+                    </li>
+                <?php endif?>
+            <?php endif?>
+        <?php endif?>
+	</ol>
+</div>

@@ -1,0 +1,73 @@
+<?php echo $this->doctype(); ?>
+<html lang="en">
+	<head>
+		<?php echo $this->headMeta()->setCharset('utf-8'); ?>
+
+		<?php $this->headTitle('Welcome to SEOTOASTER 2.0'); ?>
+		<?php echo $this->headTitle(); ?>
+
+		<?php $this->headLink()->appendStylesheet('system/css/reset.css'); ?>
+		<?php $this->headLink()->appendStylesheet('system/uithemes/seotoasterui/seotoasterui.css'); ?>
+		<?php $this->headLink()->appendStylesheet('system/install/styles.css'); ?>
+
+		<?php echo $this->headLink(); ?>
+
+		<?php $this->jQuery()->enable(); ?>
+		<?php $this->jQuery()->uiEnable(); ?>
+
+		<script>
+        <?php $this->jQuery()->onLoadCaptureStart();?>
+        $(document).ajaxStart(function(){
+	        $('#loading').fadeIn();
+        }).ajaxStop(function(){
+	        $('#loading').fadeOut();
+        });
+
+        $('#container').on('submit', 'form', function(e){
+	        e.preventDefault();
+
+            if( !$(e.target).attr('action')) {
+	            e.target = $(e.target).closest('form');
+            }
+
+            $.ajax({
+                type: "POST",
+                url: $(e.target).attr('action'),
+                data: $(e.target).serialize(),
+                beforeSend : function(xhr) {
+                    return xhr.setRequestHeader('X-PJAX','true'); // IMPORTANT
+                },
+                success: function(response){
+                    $('#container').html(response);
+                    $('#container .content').prepend($('<div></div>', {id: 'loading'}));
+                }
+            });
+
+			return false;
+		}).on('change', 'div.opacity :input', function(){
+			$(this).closest('div.opacity').removeClass('opacity');
+        });
+        <?php $this->jQuery()->onLoadCaptureEnd();?>
+		</script>
+
+		<?php echo $this->jQuery(); ?>
+	</head>
+	<body>
+		<div id="loading"><p style="color:#20b2aa;"><?php echo $this->translate('LOADING');?></p><img src="system/images/loading.gif" alt="<?php echo $this->translate('LOADING');?>"/></div>
+		<div class="container">
+
+			<div id="container">
+				<?php echo $this->layout()->content; ?>
+			</div>
+
+			<footer class="grid_10 prefix_1">
+				<p>
+                    <?php echo $this->translate('Sometimes web hosting providers do not offer a suitable environment to the latest technology platforms like Seotoaster.');?><br />
+					If you run into difficulties, please visit <a href="http://www.seotoaster.com/" target="_blank" title="SEOTOASTER open source CMS">seotoaster.com</a> for solutions.
+				</p>
+			</footer>
+
+		</div>
+	</body>
+</html>
+
